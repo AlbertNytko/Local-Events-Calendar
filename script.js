@@ -1,41 +1,57 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const calendarEl = document.getElementById("calendar");
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ['dayGrid'],
-        events: events,
-        eventClick: handleEventClick,
-        selectable: true,
-        select: handleDateSelect,
-        editable: true,
-        eventDrop: handleEventDrop,
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize FullCalendar
+    var calendar = $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        editable: true, // Enable draggable events
+        events: [
+            {
+                title: 'Event 1',
+                start: '2024-01-15T10:00:00',
+                end: '2024-01-15T12:00:00',
+                color: '#007bff', // Blue color
+                icon: 'path/to/icon1.svg'  // Replace with my icon path
+            },
+            {
+                title: 'Event 2',
+                start: '2024-01-16T14:00:00',
+                end: '2024-01-16T16:00:00',
+                color: '#28a745', // Green color
+                icon: 'path/to/icon2.svg'  // Replace my icon path when found
+            }
+            // Add more events with different colors and icons as needed
+        ],
+        // Event drop callback
+        eventDrop: function(event, delta, revertFunc) {
+            alert('Event dropped on ' + event.start.format());
+        },
+        // Event click callback
+        eventClick: function(event) {
+            var title = prompt('Event Title:', event.title);
+            if (title) {
+                event.title = title;
+                calendar.fullCalendar('updateEvent', event);
+            }
+        },
+        // Day click callback for adding new events
+        dayClick: function(date, jsEvent, view) {
+            var title = prompt('Event Title:');
+            if (title) {
+                calendar.fullCalendar('renderEvent', {
+                    title: title,
+                    start: date,
+                    allDay: true
+                });
+            }
+        },
+        // Event render callback to display custom icons
+        eventRender: function(event, element) {
+            if (event.icon) {
+                element.find('.fc-title').prepend('<img src="' + event.icon + '" class="event-icon" />');
+            }
+        }
     });
-
-    calendar.render();
-
-    function handleEventClick(info) {
-        // Handle event click (e.g., show event details or delete option)
-        if (confirm("Delete event '" + info.event.title + "'?")) {
-            info.event.remove();
-        }
-    }
-
-    function handleDateSelect(selectInfo) {
-        // Handle date selection (e.g., open a modal to add a new event)
-        const title = prompt("Event Title:");
-        if (title) {
-            calendar.addEvent({
-                title: title,
-                start: selectInfo.start,
-                end: selectInfo.end,
-                allDay: selectInfo.allDay,
-            });
-        }
-        calendar.unselect();
-    }
-
-    function handleEventDrop(info) {
-        // Handle event drop (e.g., update event date in the database)
-        // You can add backend logic to update the event in the database
-        console.log(info.event.title + " was dropped on " + info.event.start.toISOString());
-    }
 });

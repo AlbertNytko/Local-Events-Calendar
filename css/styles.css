@@ -1,26 +1,57 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
 }
 
 #calendar {
-    width: 80%;
     max-width: 800px;
     margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Additional styles for event details */
+.fc-toolbar {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+}
+
+.fc-button-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
 .fc-event {
-    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
 }
 
-/* Optional: Customize the appearance of selected date range */
-.fc-highlight {
-    background-color: #d1e9ff;
+.fc-event:hover {
+    background-color: #218838;
+}
+
+.fc-day-header {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.fc-day-number {
+    color: #333;
+}
+
+.fc-day:hover {
+    background-color: #e9ecef;
+}
+
+.fc-today {
+    background-color: #cce5ff;
 }
