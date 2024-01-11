@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+#calendar {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Additional styles for event details */
+.fc-event {
+    cursor: pointer;
+}
+
+/* Optional: Customize the appearance of selected date range */
+.fc-highlight {
+    background-color: #d1e9ff;
+}
