@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #6899ca;
     margin: 0;
     padding: 0;
     display: flex;
@@ -54,4 +54,58 @@ body {
 
 .fc-today {
     background-color: #cce5ff;
+}
+
+
+/* Dark Theme */
+body.dark-theme #calendar {
+    background-color: #4d4d4d;
+    color: #3a3636;
+}
+
+/* Light Theme */
+body.light-theme #calendar {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Red Theme */
+body.red-theme #calendar {
+    background-color: #984040;
+    color: #fff;
+}
+
+body.blue-theme #calendar {
+    background-color: #3498db;
+    color: #fff;
+}
+
+/* Green Theme */
+body.green-theme #calendar {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+/* Purple Theme */
+body.purple-theme #calendar {
+    background-color: #9b59b6;
+    color: #fff;
+}
+
+/* Orange Theme */
+body.orange-theme #calendar {
+    background-color: #e67e22;
+    color: #fff;
+}
+
+/* Teal Theme */
+body.teal-theme #calendar {
+    background-color: #008080;
+    color: #fff;
+}
+
+/* Pink Theme */
+body.pink-theme #calendar {
+    background-color: #e91e63;
+    color: #fff;
 }
