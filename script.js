@@ -68,7 +68,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         dayClick: function (date) {
-            var newEvent = promptForEventDetails({ start: date, allDay: true });
+            var startTime = prompt('Event Start Time (HH:mm):', '09:00');
+            var endTime = prompt('Event End Time (HH:mm):', '10:00');
+
+            var newEvent = promptForEventDetails({
+                start: moment(date.format('YYYY-MM-DD') + ' ' + startTime),
+                end: moment(date.format('YYYY-MM-DD') + ' ' + endTime),
+            });
+
             if (newEvent) {
                 eventDatabase.addEvent(newEvent);
             }
@@ -126,8 +133,6 @@ document.addEventListener('DOMContentLoaded', function () {
         $('body').removeClass('dark-theme light-theme red-theme blue-theme green-theme purple-theme orange-theme teal-theme pink-theme').addClass(selectedTheme);
     });
 
-
-
     function updateFullCalendarEvents() {
         calendar.fullCalendar('removeEvents');
         calendar.fullCalendar('addEventSource', eventDatabase.events);
@@ -145,6 +150,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 start: start,
                 end: end,
                 color: prompt('Event Color:', existingEvent.color || ''),
+                description: prompt('Event Description:', existingEvent.description || ''),
+                details: prompt('Event Details:', existingEvent.details || ''),
             };
 
             return newEvent;
