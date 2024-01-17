@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     // In-memory database
     var eventDatabase = {
-        events: getStoredEvents() || [],
+        events: [],
+        currentUser: null,
         addEvent: function (event) {
             this.events.push(event);
-            updateStoredEvents(this.events);
+            updateStoredUserEvents(this.currentUser, this.events);
             updateFullCalendarEvents();
         },
         updateEvent: function (updatedEvent) {
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             if (index !== -1) {
                 this.events[index] = updatedEvent;
-                updateStoredEvents(this.events);
+                updateStoredUserEvents(this.currentUser, this.events);
                 updateFullCalendarEvents();
             }
         },
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.events = this.events.filter(function (event) {
                 return event._id !== eventId;
             });
-            updateStoredEvents(this.events);
+            updateStoredUserEvents(this.currentUser, this.events);
             updateFullCalendarEvents();
         }
     };
@@ -79,14 +80,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Theme selector
-    $('#theme-selector').on('change', function () {
-        var selectedTheme = $(this).val();
-        $('body').removeClass('dark-theme light-theme red-theme blue-theme green-theme purple-theme orange-theme teal-theme pink-theme').addClass(selectedTheme);
+    // User Authentication
+    $('#login').on('click', function () {
+        var username = $('#username').val();
+        if (username.trim() !== '') {
+            eventDatabase.currentUser = username;
+            loadUserEvents();
+            $('#authentication').hide();
+        }
     });
 
-    function getStoredEvents() {
-        var storedEvents = localStorage.getItem('calendarEvents');
+    $('#logout').on('click', function () {
+        eventDatabase.currentUser = null;
+        $('#authentication').show();
+        clearCalendar();
+    });
+
+    function loadUserEvents() {
+        var userEvents = getStoredUserEvents(eventDatabase.currentUser) || [];
+        eventDatabase.events = userEvents;
+        updateFullCalendarEvents();
+    }
+
+    function getStoredUserEvents(username) {
+        var storedEvents = localStorage.getItem('calendarEvents_' + username);
         try {
             return storedEvents ? JSON.parse(storedEvents) : [];
         } catch (error) {
@@ -95,9 +112,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function updateStoredEvents(events) {
-        localStorage.setItem('calendarEvents', JSON.stringify(events));
+    function updateStoredUserEvents(username, events) {
+        localStorage.setItem('calendarEvents_' + username, JSON.stringify(events));
     }
+
+    function clearCalendar() {
+        calendar.fullCalendar('removeEvents');
+    }
+
+    // Theme selector
+    $('#theme-selector').on('change', function () {
+        var selectedTheme = $(this).val();
+        $('body').removeClass('dark-theme light-theme red-theme blue-theme green-theme purple-theme orange-theme teal-theme pink-theme').addClass(selectedTheme);
+    });
+
+
 
     function updateFullCalendarEvents() {
         calendar.fullCalendar('removeEvents');
