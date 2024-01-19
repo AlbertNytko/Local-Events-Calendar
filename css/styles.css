@@ -109,3 +109,7 @@ body.pink-theme #calendar {
     background-color: #e91e63;
     color: #fff;
 }
+
+.fc-customButton {
+    margin-right: 8px;
+}

@@ -31,7 +31,33 @@ document.addEventListener('DOMContentLoaded', function () {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'year,month,agendaWeek,agendaDay'
+        },
+        customButtons: {
+            yearButton: {
+                text: 'Year',
+                click: function () {
+                    calendar.fullCalendar('changeView', 'year');
+                }
+            },
+            monthButton: {
+                text: 'Month',
+                click: function () {
+                    calendar.fullCalendar('changeView', 'month');
+                }
+            },
+            weekButton: {
+                text: 'Week',
+                click: function () {
+                    calendar.fullCalendar('changeView', 'agendaWeek');
+                }
+            },
+            dayButton: {
+                text: 'Day',
+                click: function () {
+                    calendar.fullCalendar('changeView', 'agendaDay');
+                }
+            }
         },
         editable: true,
         events: eventDatabase.events,
@@ -74,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 revertFunc();
             }
         },
-        
+
         eventClick: function (event) {
             var action = prompt('Do you want to edit or delete this event? Enter "edit" or "delete":');
 
