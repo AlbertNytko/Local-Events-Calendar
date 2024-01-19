@@ -35,21 +35,46 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         editable: true,
         events: eventDatabase.events,
-        eventDrop: function (event) {
-            // Get the new date
-            var newDate = event.start.format();
 
+        eventDrop: function (event, delta, revertFunc) {
+            // Get the new dates
+            var newStartDate = event.start.format();
+            var newEndDate = (event.end) ? event.end.format() : null;
+        
             // Ask for confirmation
-            var confirmMove = confirm('Are you sure you want to move this event to ' + newDate + '?');
+            var confirmMove = confirm('Are you sure you want to move this event to ' + newStartDate + '?');
             if (confirmMove) {
-                // Save the event first
-                event.start = newDate;
-                eventDatabase.updateEvent(event);
-
-                // Update the FullCalendar events source
-                updateFullCalendarEvents();
+                // Update the event directly in the in-memory database
+                var updatedEvent = {
+                    _id: event._id,
+                    title: event.title,
+                    start: newStartDate,
+                    end: newEndDate,
+                    color: event.color,
+                    description: event.description,
+                    details: event.details,
+                    // Add other properties as needed
+                };
+        
+                var index = eventDatabase.events.findIndex(function (e) {
+                    return e._id === updatedEvent._id;
+                });
+        
+                if (index !== -1) {
+                    eventDatabase.events[index] = updatedEvent;
+        
+                    // Update the FullCalendar events source
+                    updateFullCalendarEvents();
+        
+                    // Save the updated events to localStorage
+                    updateStoredUserEvents(eventDatabase.currentUser, eventDatabase.events);
+                }
+            } else {
+                // If not confirmed, revert the event back to its original position
+                revertFunc();
             }
         },
+        
         eventClick: function (event) {
             var action = prompt('Do you want to edit or delete this event? Enter "edit" or "delete":');
 
@@ -81,6 +106,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         eventRender: function (event, element) {
+            var timeRange = formatTimeRange(event.start, event.end);
+            var description = event.description || '';
+    
+            var tooltipContent = '<strong>' + event.title + '</strong><br>' + timeRange + '<br>' + description;
+    
+            tippy(element[0], {
+                content: tooltipContent,
+                allowHTML: true,
+                theme: 'light', // You can customize the theme
+                placement: 'top',
+            });
+    
             if (event.icon) {
                 element.find('.fc-title').prepend('<img src="' + event.icon + '" class="event-icon" />');
             }
@@ -157,6 +194,24 @@ document.addEventListener('DOMContentLoaded', function () {
             return newEvent;
         }
         return null;
+    }
+
+    function formatTimeRange(start, end) {
+        var timeFormat = 'h:mm A';
+        var formattedTimeRange = '';
+    
+        if (start) {
+            formattedTimeRange += start.format(timeFormat);
+        }
+    
+        if (end) {
+            if (formattedTimeRange.length > 0) {
+                formattedTimeRange += ' - ';
+            }
+            formattedTimeRange += end.format(timeFormat);
+        }
+    
+        return formattedTimeRange;
     }
 
     function generateUniqueId() {
