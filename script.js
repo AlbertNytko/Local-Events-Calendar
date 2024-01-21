@@ -78,8 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     end: newEndDate,
                     color: event.color,
                     description: event.description,
-                    details: event.details,
-                    // Add other properties as needed
+                    category: event.category,  // Keep the existing category
                 };
         
                 var index = eventDatabase.events.findIndex(function (e) {
@@ -134,13 +133,11 @@ document.addEventListener('DOMContentLoaded', function () {
         eventRender: function (event, element) {
             var timeRange = formatTimeRange(event.start, event.end);
             var description = event.description || '';
-    
             var tooltipContent = '<strong>' + event.title + '</strong><br>' + timeRange + '<br>' + description;
-    
             tippy(element[0], {
                 content: tooltipContent,
                 allowHTML: true,
-                theme: 'light', // You can customize the theme
+                theme: 'light',
                 placement: 'top',
             });
     
@@ -196,9 +193,21 @@ document.addEventListener('DOMContentLoaded', function () {
         $('body').removeClass('dark-theme light-theme red-theme blue-theme green-theme purple-theme orange-theme teal-theme pink-theme').addClass(selectedTheme);
     });
 
+    $('#apply-filter').on('click', function () {
+        updateFullCalendarEvents();
+    });
+    
     function updateFullCalendarEvents() {
+        var selectedCategory = $('#category-filter').val();
+    
+        var filteredEvents = (selectedCategory === 'all') ?
+            eventDatabase.events :
+            eventDatabase.events.filter(function (event) {
+                return event.category === selectedCategory;
+            });
+    
         calendar.fullCalendar('removeEvents');
-        calendar.fullCalendar('addEventSource', eventDatabase.events);
+        calendar.fullCalendar('addEventSource', filteredEvents);
     }
 
     function promptForEventDetails(existingEvent) {
@@ -206,7 +215,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (title !== null) {
             var start = existingEvent.start ? moment(existingEvent.start) : null;
             var end = existingEvent.end ? moment(existingEvent.end) : null;
-
+    
+            var category = prompt('Event Category (e.g., Work, Personal):', existingEvent.category || 'default');
+    
             var newEvent = {
                 _id: existingEvent._id || generateUniqueId(),
                 title: title,
@@ -214,9 +225,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 end: end,
                 color: prompt('Event Color:', existingEvent.color || ''),
                 description: prompt('Event Description:', existingEvent.description || ''),
-                details: prompt('Event Details:', existingEvent.details || ''),
+                category: category.toLowerCase(),  // Convert to lowercase for consistency
             };
-
+    
             return newEvent;
         }
         return null;

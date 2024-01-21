@@ -26,18 +26,29 @@
         <button id="login">Login</button>
         <button id="logout">Logout</button>
     </div>
-    <label for="theme-selector">Select Theme:</label>
-    <select id="theme-selector">
-        <option value="dark-theme">Dark Theme</option>
-        <option value="light-theme">Light Theme</option>
-        <option value="red-theme">Red Theme</option>
-        <option value="blue-theme">Blue Theme</option>
-        <option value="green-theme">Green Theme</option>
-        <option value="purple-theme">Purple Theme</option>
-        <option value="orange-theme">Orange Theme</option>
-        <option value="teal-theme">Teal Theme</option>
-        <option value="pink-theme">Pink Theme</option>
-    </select>
+    <div id="filter-container">
+        <label for="category-filter">Filter by Category:</label>
+        <select id="category-filter">
+            <option value="all">All</option>
+            <option value="work">Work</option>
+            <option value="personal">Personal</option>
+        </select>
+        <button id="apply-filter">Apply Filter</button>
+    </div>
     <div id="calendar"></div>
+    <div id="theme-selector-container">
+        <label for="theme-selector">Select Theme:</label>
+        <select id="theme-selector">
+            <option value="dark-theme">Dark Theme</option>
+            <option value="light-theme">Light Theme</option>
+            <option value="red-theme">Red Theme</option>
+            <option value="blue-theme">Blue Theme</option>
+            <option value="green-theme">Green Theme</option>
+            <option value="purple-theme">Purple Theme</option>
+            <option value="orange-theme">Orange Theme</option>
+            <option value="teal-theme">Teal Theme</option>
+            <option value="pink-theme">Pink Theme</option>
+        </select>
+    </div>
 </body>
 </html>
