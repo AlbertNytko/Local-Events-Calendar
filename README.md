@@ -14,6 +14,6 @@ This is a modern FullCalendar example with customizable themes and persistent ev
 ## Future Implementations
 - Adding a local event API
 - clean up the CRUD operations to work better
-- update local DB 
+- update local DB
 - more of a dynamic layout for users
-- 
+
