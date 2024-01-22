@@ -210,3 +210,20 @@ body.pink-theme #calendar {
 #theme-selector:hover {
     background-color: #0056b3;
 }
+
+
+#weather-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+}
+
+/* Style for weather information */
+#weather-info {
+    margin-top: 10px;
+}

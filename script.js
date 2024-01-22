@@ -254,4 +254,46 @@ document.addEventListener('DOMContentLoaded', function () {
     function generateUniqueId() {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
+
+
+    function getWeather(city) {
+        var apiKey = '29c5ba96d56b06773fe801eae90b026d';
+        var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=29c5ba96d56b06773fe801eae90b026d`;
+
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            success: function (data) {
+                displayWeather(data);
+            },
+            error: function (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        });
+    }
+
+    function displayWeather(data) {
+        var weatherInfo = $('#weather-info');
+        weatherInfo.empty();
+
+        if (data.weather && data.weather.length > 0) {
+            var weatherDescription = data.weather[0].description;
+            var temperature = (data.main && data.main.temp) ? data.main.temp : '';
+            var humidity = (data.main && data.main.humidity) ? data.main.humidity : '';
+            var windSpeed = (data.wind && data.wind.speed) ? data.wind.speed : '';
+
+            var weatherHtml = `<p><strong>Description:</strong> ${weatherDescription}</p>`;
+            weatherHtml += `<p><strong>Temperature:</strong> ${temperature} K</p>`;
+            weatherHtml += `<p><strong>Humidity:</strong> ${humidity}%</p>`;
+            weatherHtml += `<p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>`;
+
+            weatherInfo.html(weatherHtml);
+        } else {
+            weatherInfo.html('<p>No weather data available.</p>');
+        }
+    }
+
+    // Example: Get weather for Chicago
+    getWeather('Chicago');
+
 });
