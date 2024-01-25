@@ -273,3 +273,44 @@ body.pink-theme #calendar {
     font-size: 14px;
     color: #0c0909;
 }
+
+#local-events {
+    position: fixed;
+    top: 10px; /* Adjust the top position to your preference */
+    left: 10px; /* Adjust the left position to your preference */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#event-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.event-item {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.event-item h3 {
+    margin: 0;
+    color: #333;
+}
+
+.event-item p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.event-item a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}

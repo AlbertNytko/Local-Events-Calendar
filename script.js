@@ -298,7 +298,43 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Example: Get weather for Chicago
-    getWeather('Chicago');
+
+
+
+
+
+
+    function authorize(apiKey) {
+        var authUrl = 'https://www.eventbrite.com/oauth/authorize?response_type=token&client_id=' + apiKey;
+        
+        // Open a new window or popup for user authorization
+        var authWindow = window.open(authUrl, '_blank', 'width=500,height=600');
+    
+        // Listen for changes in the new window's location
+        var interval = setInterval(function () {
+            try {
+                // Check if the window's location contains an access token
+                if (authWindow.location.href.indexOf('access_token=') !== -1) {
+                    // Extract the access token from the URL
+                    var accessToken = authWindow.location.href.split('access_token=')[1].split('&')[0];
+    
+                    // Close the authorization window
+                    authWindow.close();
+    
+                    // Now you can make API requests using this access token
+                    displayLocalEvents(accessToken);
+    
+                    // Clear the interval
+                    clearInterval(interval);
+                }
+            } catch (error) {
+                // Ignore errors (due to cross-origin security)
+            }
+        }, 1000);
+    }
+    
+    // Call the authorize function with your API key
+    var apiKey = 'O3SQ6C6JXC2UHGFVMBUS';
+    authorize(apiKey);
 
 });
