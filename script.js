@@ -256,10 +256,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function getWeather(city) {
-        var apiKey = '29c5ba96d56b06773fe801eae90b026d';
-        var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=29c5ba96d56b06773fe801eae90b026d`;
-
+    function getWeather(location) {
+        var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location},us&APPID=29c5ba96d56b06773fe801eae90b026d`;
+    
         $.ajax({
             url: apiUrl,
             method: 'GET',
@@ -271,6 +270,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Add an event listener for the "Get Weather" button
+    $('#get-weather').on('click', function () {
+        var selectedLocation = $('#location-selector').val();
+        getWeather(selectedLocation);
+    });
 
     function displayWeather(data) {
         var weatherInfo = $('#weather-info');
